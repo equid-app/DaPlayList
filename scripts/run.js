@@ -7,16 +7,12 @@ const main = async () => {
     console.log(`ownder address : ${owner.address}`)
 
     let addPlayList = await PlayListContract.connect(randomPrerson).createPlayList(
-        'test',
-        'test',
-        1,
-        0,
-        0,
-        'test',
-        1,
+        'name',
+        'description',
+        'url',
     );
     addPlayList.wait();
-    let getPlayList = await PlayListContract.getPlayList(1);
+    let getPlayList = await PlayListContract.getPlayListItems();
     console.log(getPlayList);
 }
 

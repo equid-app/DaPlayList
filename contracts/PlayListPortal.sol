@@ -5,16 +5,21 @@ contract PlayListPortal {
     uint256 public totalList;
 
     struct SpotifyPlayList {
+        address sender;
         string name;
         string description;
-        uint256 totalSong;
-        uint256 totalArtist;
-        uint256 totalAlbum;
         string url;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => SpotifyPlayList) public SpotifyPlayLists;
-    uint256[] public playListIds;
+    SpotifyPlayList[] lists;
+    event NewPlayList(
+        address sender,
+        string name,
+        string description,
+        string url,
+        uint256 timestamp
+    );
 
     constructor() {
         console.log("PlayListPortal contract is deployed");
@@ -23,46 +28,33 @@ contract PlayListPortal {
     function createPlayList(
         string memory _name,
         string memory _description,
-        uint256 _totalSong,
-        uint256 _totalArtist,
-        uint256 _totalAlbum,
-        string memory _url,
-        uint256 id
+        string memory _url
     ) public {
-        SpotifyPlayList storage newPlayList = SpotifyPlayLists[id];
-        newPlayList.name = _name;
-        newPlayList.description = _description;
-        newPlayList.url = _url;
-        newPlayList.totalSong = _totalSong;
-        newPlayList.totalArtist = _totalArtist;
-        newPlayList.totalAlbum = _totalAlbum;
-        playListIds.push(id);
-    }
+        totalList += 1;
 
-    function getPlayList(uint256 id)
-        public
-        view
-        returns (
-            string memory name,
-            string memory description,
-            uint256 totalSong,
-            uint256 totalArtist,
-            uint256 totalAlbum,
-            string memory url
-        )
-    {
-        SpotifyPlayList storage playList = SpotifyPlayLists[id];
-        return (
-            playList.name,
-            playList.description,
-            playList.totalSong,
-            playList.totalArtist,
-            playList.totalAlbum,
-            playList.url
+        lists.push(
+            SpotifyPlayList(
+                msg.sender,
+                _name,
+                _description,
+                _url,
+                block.timestamp
+            )
+        );
+        emit NewPlayList(
+            msg.sender,
+            _name,
+            _description,
+            _url,
+            block.timestamp
         );
     }
 
+    function getPlayListItems() public view returns (SpotifyPlayList[] memory) {
+        return lists;
+    }
+
     function getPlayListCount() public view returns (uint256 count) {
-        return playListIds.length;
+        return totalList;
     }
 }
