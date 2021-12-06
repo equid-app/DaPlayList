@@ -6,6 +6,9 @@
   "repository": "https://github.com/equid-app/DaPlayList.git",
   "author": "@aryasadeghy",
   "license": "MIT",
+  "scripts": {
+    "start": "npx hardhat  scripts/run.js"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
